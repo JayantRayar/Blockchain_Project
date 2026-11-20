@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Activity, RefreshCw, Layers, Menu, X, Wifi } from 'lucide-react';
+import { RefreshCw, Menu, X } from 'lucide-react';
 import { api } from '../../services/api';
 import { useToast } from '../../context/ToastContext';
 import Badge from '../common/Badge';
@@ -12,7 +12,6 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
   const [isSyncing, setIsSyncing] = useState(false);
   const [backendOnline, setBackendOnline] = useState(true);
 
-  // Poll tip height & backend status periodically
   const fetchStatus = async () => {
     try {
       const res = await api.getHealth();
@@ -28,7 +27,7 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
         setTipHeight(bRes.data.currentBlockHeight);
       }
     } catch {
-      // Handled silently
+      // Silent in background
     }
   };
 
@@ -44,7 +43,7 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
     try {
       const res = await api.triggerSync();
       const count = Array.isArray(res?.data) ? res.data.length : 0;
-      toast.success(`Synchronized ${count} wallet(s) successfully!`, 'Sync Complete');
+      toast.success(`Synchronized ${count} wallet(s) successfully`, 'Sync Complete');
       fetchStatus();
     } catch (err) {
       toast.error(err.message || 'Failed to trigger blockchain synchronization', 'Sync Failed');
@@ -54,27 +53,27 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white border-b border-[#eaecef] px-4 lg:px-6 h-16 flex items-center justify-between shadow-[0_1px_2px_rgba(0,0,0,0.03)]">
+    <header className="sticky top-0 z-40 bg-white border-b border-[#eaecef] px-4 lg:px-6 h-16 flex items-center justify-between shadow-[0_1px_2px_rgba(0,0,0,0.02)]">
       {/* Left: Mobile Toggle & Brand */}
       <div className="flex items-center gap-3">
         <button
           onClick={onToggleMobileSidebar}
-          className="lg:hidden p-2 rounded-lg text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+          className="lg:hidden p-2 rounded text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
           aria-label="Toggle navigation menu"
         >
           {isMobileSidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
-        <Link to="/" className="flex items-center gap-2.5 group">
-          <div className="w-8 h-8 rounded-lg bg-[#FCD535] flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
-            <span className="font-extrabold text-[#181a20] text-base font-mono">₿</span>
+        <Link to="/" className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded bg-[#FCD535] flex items-center justify-center font-bold text-[#181a20] text-sm font-sans tracking-tight">
+            BTC
           </div>
           <div className="flex flex-col">
-            <span className="font-bold text-base tracking-tight text-[#1e2329] flex items-center gap-1">
-              Block<span className="text-[#b37400]">Watch</span>
+            <span className="font-bold text-base tracking-tight text-[#1e2329] font-sans">
+              BlockWatch
             </span>
-            <span className="text-[10px] text-[#707a8a] font-mono tracking-wider -mt-1 hidden sm:block">
-              BITCOIN MONITORING
+            <span className="text-[11px] text-[#707a8a] font-normal leading-tight hidden sm:block">
+              Bitcoin Monitoring Terminal
             </span>
           </div>
         </Link>
@@ -83,35 +82,30 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
       {/* Right: Tip Height, Network, Sync Button, Status */}
       <div className="flex items-center gap-2 sm:gap-3">
         {/* Backend Online status indicator */}
-        <div
-          title={backendOnline ? 'Backend API Connected' : 'Backend Unreachable'}
-          className="hidden md:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#f5f6f8] border border-[#eaecef] text-xs"
-        >
+        <div className="hidden md:flex items-center">
           {backendOnline ? (
-            <>
-              <span className="w-2 h-2 rounded-full bg-[#03a66d]" />
-              <span className="text-[#1e2329] font-mono text-[11px] font-medium">API Online</span>
-            </>
+            <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-50 text-emerald-700 border border-emerald-200">
+              API Connected
+            </span>
           ) : (
-            <>
-              <span className="w-2 h-2 rounded-full bg-[#cf304a]" />
-              <span className="text-[#cf304a] font-mono text-[11px] font-medium">API Offline</span>
-            </>
+            <span className="px-2 py-0.5 rounded text-[11px] font-medium bg-rose-50 text-rose-700 border border-rose-200">
+              API Offline
+            </span>
           )}
         </div>
 
-        {/* Tip Height Pill */}
+        {/* Tip Height */}
         {tipHeight && (
-          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#f5f6f8] border border-[#eaecef] text-xs font-mono text-[#707a8a]">
-            <Layers className="w-3.5 h-3.5 text-[#b37400]" />
-            <span>Tip:</span>
-            <span className="text-[#1e2329] font-semibold">#{tipHeight.toLocaleString()}</span>
+          <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded bg-[#f5f6f8] border border-[#eaecef] text-xs">
+            <span className="text-[#707a8a]">Block:</span>
+            <span className="font-mono font-bold text-[#1e2329]">
+              {tipHeight.toLocaleString()}
+            </span>
           </div>
         )}
 
         {/* Network Badge */}
         <Badge variant={network === 'mainnet' ? 'mainnet' : 'testnet'} size="sm">
-          <span className="w-1.5 h-1.5 rounded-full bg-current" />
           {network.toUpperCase()}
         </Badge>
 
@@ -119,10 +113,10 @@ export const Navbar = ({ onToggleMobileSidebar, isMobileSidebarOpen }) => {
         <button
           onClick={handleManualSync}
           disabled={isSyncing}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] font-semibold text-xs tracking-wide transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-50"
+          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] font-bold text-xs tracking-wide transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-50"
           title="Trigger immediate sync with Blockstream"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-[#181a20]' : ''}`} />
+          <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
           <span className="hidden sm:inline">{isSyncing ? 'Syncing...' : 'Sync Now'}</span>
         </button>
       </div>

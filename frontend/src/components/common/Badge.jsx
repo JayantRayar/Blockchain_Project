@@ -2,7 +2,7 @@ import React from 'react';
 
 export const Badge = ({ children, variant = 'default', size = 'sm', className = '' }) => {
   const sizeClasses = {
-    xs: 'px-1.5 py-0.5 text-[10px]',
+    xs: 'px-1.5 py-0.5 text-[11px]',
     sm: 'px-2 py-0.5 text-xs font-medium',
     md: 'px-2.5 py-1 text-xs font-semibold'
   }[size] || 'px-2 py-0.5 text-xs';
@@ -30,7 +30,7 @@ export const Badge = ({ children, variant = 'default', size = 'sm', className = 
   }[variant.toLowerCase()] || 'bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]';
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded tracking-wide ${sizeClasses} ${variantClasses} ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded font-sans tracking-tight ${sizeClasses} ${variantClasses} ${className}`}>
       {children}
     </span>
   );

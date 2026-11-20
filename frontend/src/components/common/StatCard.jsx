@@ -10,13 +10,13 @@ export const StatCard = ({
   className = ''
 }) => {
   return (
-    <div className={`bg-white border border-[#eaecef] rounded-xl p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all duration-150 ${className}`}>
+    <div className={`bg-white border border-[#eaecef] rounded-lg p-5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] hover:border-slate-300 transition-all duration-150 ${className}`}>
       <div className="flex items-center justify-between gap-3 mb-2.5">
-        <span className="text-xs font-medium tracking-wide text-[#707a8a]">
+        <span className="text-xs font-semibold uppercase tracking-wider text-[#707a8a] font-sans">
           {title}
         </span>
         {Icon && (
-          <div className="p-1.5 rounded-lg bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]">
+          <div className="p-1.5 rounded bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]">
             <Icon className="w-4 h-4 text-slate-700" />
           </div>
         )}
@@ -24,11 +24,11 @@ export const StatCard = ({
 
       <div className="flex items-baseline justify-between gap-2">
         <div className="min-w-0">
-          <div className="text-xl sm:text-2xl font-bold font-mono tracking-tight text-[#1e2329] truncate">
+          <div className="text-2xl font-bold font-mono tracking-tight text-[#1e2329] truncate">
             {value}
           </div>
           {subValue && (
-            <div className="text-xs text-[#707a8a] font-mono mt-1 flex items-center gap-1.5 truncate">
+            <div className="text-xs text-[#707a8a] font-mono font-normal mt-1 flex items-center gap-1.5 truncate">
               {subValue}
             </div>
           )}
@@ -38,7 +38,7 @@ export const StatCard = ({
       </div>
 
       {trend && (
-        <div className="mt-3 pt-2.5 border-t border-[#f1f3f5] text-xs text-[#707a8a] flex items-center gap-1">
+        <div className="mt-3 pt-2.5 border-t border-[#f1f3f5] text-xs text-[#707a8a] font-sans flex items-center gap-1">
           {trend}
         </div>
       )}

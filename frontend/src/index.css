@@ -1,5 +1,47 @@
 @import "tailwindcss";
 
+/* Professional Open Font Definitions: Liberation Sans & DejaVu Sans Mono */
+@font-face {
+  font-family: 'Liberation Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('Liberation Sans'), local('LiberationSans-Regular'),
+       url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/liberationsans/LiberationSans-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Liberation Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('Liberation Sans Bold'), local('LiberationSans-Bold'),
+       url('https://cdn.jsdelivr.net/gh/google/fonts@main/ofl/liberationsans/LiberationSans-Bold.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: local('DejaVu Sans Mono'), local('DejaVuSansMono'),
+       url('https://cdn.jsdelivr.net/gh/dejavu-fonts/dejavu-fonts@version_2_37/resources/DejaVuSansMono.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'DejaVu Sans Mono';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: local('DejaVu Sans Mono Bold'), local('DejaVuSansMono-Bold'),
+       url('https://cdn.jsdelivr.net/gh/dejavu-fonts/dejavu-fonts@version_2_37/resources/DejaVuSansMono-Bold.ttf') format('truetype');
+}
+
+@theme {
+  --font-sans: 'Liberation Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  --font-mono: 'DejaVu Sans Mono', 'Liberation Mono', Menlo, Consolas, monospace;
+}
+
 :root {
   color-scheme: light;
   --bg-primary: #f8f9fa;
@@ -13,9 +55,17 @@ body {
   margin: 0;
   background-color: #f8f9fa;
   color: #1e2329;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-sans);
+  line-height: 1.5;
+  font-size-adjust: from-font;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+code, pre, .font-mono {
+  font-family: var(--font-mono);
+  font-size-adjust: from-font;
 }
 
 /* Crisp professional financial scrollbar */
@@ -34,7 +84,6 @@ body {
   background: #b0b7c3;
 }
 
-/* Tabular figures for numbers */
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }

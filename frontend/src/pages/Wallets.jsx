@@ -5,7 +5,6 @@ import {
   Search,
   Trash2,
   Eye,
-  ExternalLink,
   Power,
   RefreshCw,
   Clock,
@@ -38,23 +37,19 @@ export const Wallets = () => {
     hasPrevPage: false
   });
 
-  // Modal States
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [newAddress, setNewAddress] = useState('');
   const [newNetwork, setNewNetwork] = useState('testnet');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Delete State
   const [walletToDelete, setWalletToDelete] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // Detail Modal State
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [walletDetails, setWalletDetails] = useState(null);
   const [walletTransactions, setWalletTransactions] = useState([]);
   const [detailsLoading, setDetailsLoading] = useState(false);
 
-  // Status update in-flight state
   const [togglingId, setTogglingId] = useState(null);
 
   const fetchWallets = useCallback(async () => {
@@ -82,7 +77,6 @@ export const Wallets = () => {
     fetchWallets();
   }, [fetchWallets]);
 
-  // Handle Wallet Registration
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!newAddress.trim()) {
@@ -95,7 +89,7 @@ export const Wallets = () => {
         address: newAddress.trim(),
         network: newNetwork
       });
-      toast.success('Wallet registered! Initial sync has started in the background.', 'Wallet Added');
+      toast.success('Wallet registered. Initial sync has started in background.', 'Wallet Added');
       setNewAddress('');
       setIsRegisterOpen(false);
       fetchWallets();
@@ -106,13 +100,12 @@ export const Wallets = () => {
     }
   };
 
-  // Handle Toggle Active/Inactive
   const handleToggleStatus = async (wallet) => {
     setTogglingId(wallet.id);
     try {
       await api.updateWalletStatus(wallet.id, !wallet.isActive);
       toast.success(
-        `Wallet ${truncateAddress(wallet.address)} is now ${!wallet.isActive ? 'ACTIVE' : 'PAUSED'}`,
+        `Wallet ${truncateAddress(wallet.address)} is now ${!wallet.isActive ? 'Active' : 'Paused'}`,
         'Status Updated'
       );
       setWallets((prev) =>
@@ -125,7 +118,6 @@ export const Wallets = () => {
     }
   };
 
-  // Handle Delete Wallet
   const handleDeleteConfirm = async () => {
     if (!walletToDelete) return;
     setIsDeleting(true);
@@ -141,7 +133,6 @@ export const Wallets = () => {
     }
   };
 
-  // Handle View Wallet Details
   const handleViewDetails = async (wallet) => {
     setSelectedWallet(wallet);
     setDetailsLoading(true);
@@ -160,27 +151,26 @@ export const Wallets = () => {
     }
   };
 
-  // Filtered by Search Term
   const filteredWallets = wallets.filter((w) =>
     w.address.toLowerCase().includes(searchTerm.toLowerCase().trim())
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 font-sans">
       {/* Top Header & Search */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-[#eaecef]">
         <div>
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1e2329] flex items-center gap-2">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#1e2329]">
             Bitcoin Wallets
           </h1>
-          <p className="text-xs text-[#707a8a] mt-0.5">
-            Register, manage, and monitor Bitcoin addresses
+          <p className="text-xs text-[#707a8a] mt-0.5 font-normal">
+            Register and manage monitored Bitcoin addresses
           </p>
         </div>
 
         <button
           onClick={() => setIsRegisterOpen(true)}
-          className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] font-semibold text-xs tracking-wide transition-all shadow-xs active:scale-95 cursor-pointer self-start sm:self-auto"
+          className="flex items-center gap-1.5 px-3.5 py-2 rounded bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] font-bold text-xs tracking-wide transition-all shadow-xs active:scale-95 cursor-pointer self-start sm:self-auto"
         >
           <Plus className="w-4 h-4" />
           <span>Register New Wallet</span>
@@ -188,29 +178,27 @@ export const Wallets = () => {
       </div>
 
       {/* Filter and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-[#eaecef] shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
-        {/* Search Input */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-lg border border-[#eaecef] shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         <div className="relative w-full sm:w-80">
           <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search address (e.g. tb1q...)"
-            className="w-full pl-9 pr-3.5 py-1.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono placeholder:text-slate-400 focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors"
+            placeholder="Search address..."
+            className="w-full pl-9 pr-3.5 py-1.5 rounded bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono placeholder:text-slate-400 focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors"
           />
         </div>
 
-        {/* Network Filter */}
         <div className="flex items-center gap-2 w-full sm:w-auto justify-end">
-          <span className="text-xs text-[#707a8a]">Network:</span>
+          <span className="text-xs text-[#707a8a] font-normal">Network:</span>
           <select
             value={networkFilter}
             onChange={(e) => {
               setNetworkFilter(e.target.value);
               setPage(1);
             }}
-            className="px-3 py-1.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono focus:outline-none focus:border-[#F0B90B] focus:bg-white cursor-pointer"
+            className="px-3 py-1.5 rounded bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-sans focus:outline-none focus:border-[#F0B90B] focus:bg-white cursor-pointer"
           >
             <option value="">All Networks</option>
             <option value="testnet">Testnet</option>
@@ -219,7 +207,7 @@ export const Wallets = () => {
 
           <button
             onClick={fetchWallets}
-            className="p-1.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef] text-slate-600 hover:text-[#1e2329] hover:bg-slate-100 transition-colors cursor-pointer"
+            className="p-1.5 rounded bg-[#f8f9fa] border border-[#eaecef] text-slate-600 hover:text-[#1e2329] hover:bg-slate-100 transition-colors cursor-pointer"
             title="Refresh list"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -228,31 +216,30 @@ export const Wallets = () => {
       </div>
 
       {/* Wallets Table */}
-      <div className="bg-white border border-[#eaecef] rounded-xl overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
+      <div className="bg-white border border-[#eaecef] rounded-lg overflow-hidden shadow-[0_1px_3px_rgba(0,0,0,0.02)]">
         {loading ? (
           <TableSkeleton rows={5} cols={5} />
         ) : filteredWallets.length > 0 ? (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-xs">
-              <thead className="bg-[#f8f9fa] text-[#707a8a] uppercase text-[10px] tracking-wider border-b border-[#eaecef]">
+              <thead className="bg-[#f8f9fa] text-[#707a8a] uppercase text-xs font-bold tracking-wider border-b border-[#eaecef]">
                 <tr>
-                  <th className="px-5 py-3 font-semibold">Address</th>
-                  <th className="px-5 py-3 font-semibold">Network</th>
-                  <th className="px-5 py-3 font-semibold text-center">Transactions</th>
-                  <th className="px-5 py-3 font-semibold">Status</th>
-                  <th className="px-5 py-3 font-semibold">Registered</th>
-                  <th className="px-5 py-3 font-semibold text-right">Actions</th>
+                  <th className="px-5 py-3">Address</th>
+                  <th className="px-5 py-3">Network</th>
+                  <th className="px-5 py-3 text-center">Transactions</th>
+                  <th className="px-5 py-3">Status</th>
+                  <th className="px-5 py-3">Registered</th>
+                  <th className="px-5 py-3 text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#f1f3f5] font-mono">
                 {filteredWallets.map((wallet) => (
                   <tr key={wallet.id} className="hover:bg-[#f8f9fa] transition-colors">
-                    {/* Address with copy */}
                     <td className="px-5 py-3.5 text-[#1e2329]">
                       <div className="flex items-center gap-1.5">
                         <button
                           onClick={() => handleViewDetails(wallet)}
-                          className="hover:text-[#b37400] font-medium transition-colors cursor-pointer text-left"
+                          className="hover:text-[#b37400] font-bold transition-colors cursor-pointer text-left"
                           title="Click to view full wallet details"
                         >
                           {truncateAddress(wallet.address, 10, 8)}
@@ -261,20 +248,17 @@ export const Wallets = () => {
                       </div>
                     </td>
 
-                    {/* Network */}
-                    <td className="px-5 py-3.5">
+                    <td className="px-5 py-3.5 font-sans">
                       <Badge variant={wallet.network}>{wallet.network.toUpperCase()}</Badge>
                     </td>
 
-                    {/* Transaction Count */}
-                    <td className="px-5 py-3.5 text-center text-[#1e2329]">
+                    <td className="px-5 py-3.5 text-center text-[#1e2329] font-bold">
                       <span className="px-2 py-0.5 rounded bg-[#f5f6f8] border border-[#eaecef]">
                         {wallet.transactionCount ?? 0}
                       </span>
                     </td>
 
-                    {/* Active/Inactive Status Toggle */}
-                    <td className="px-5 py-3.5">
+                    <td className="px-5 py-3.5 font-sans">
                       <button
                         onClick={() => handleToggleStatus(wallet)}
                         disabled={togglingId === wallet.id}
@@ -282,23 +266,20 @@ export const Wallets = () => {
                         title={wallet.isActive ? 'Click to Pause Monitoring' : 'Click to Activate Monitoring'}
                       >
                         <Badge variant={wallet.isActive ? 'active' : 'inactive'}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${wallet.isActive ? 'bg-[#03a66d]' : 'bg-slate-400'}`} />
                           {wallet.isActive ? 'Active' : 'Paused'}
                         </Badge>
                       </button>
                     </td>
 
-                    {/* Registered Date */}
                     <td className="px-5 py-3.5 text-[#707a8a] font-sans text-xs">
                       {formatRelativeTime(wallet.createdAt)}
                     </td>
 
-                    {/* Action Buttons */}
                     <td className="px-5 py-3.5 text-right font-sans">
                       <div className="flex items-center justify-end gap-1.5">
                         <button
                           onClick={() => handleViewDetails(wallet)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#b37400] hover:bg-slate-100 transition-colors cursor-pointer"
+                          className="p-1.5 rounded text-slate-500 hover:text-[#b37400] hover:bg-slate-100 transition-colors cursor-pointer"
                           title="View Details"
                         >
                           <Eye className="w-4 h-4" />
@@ -307,7 +288,7 @@ export const Wallets = () => {
                         <button
                           onClick={() => handleToggleStatus(wallet)}
                           disabled={togglingId === wallet.id}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#03a66d] hover:bg-slate-100 transition-colors cursor-pointer"
+                          className="p-1.5 rounded text-slate-500 hover:text-[#03a66d] hover:bg-slate-100 transition-colors cursor-pointer"
                           title={wallet.isActive ? 'Pause Monitoring' : 'Resume Monitoring'}
                         >
                           <Power className={`w-4 h-4 ${wallet.isActive ? 'text-[#03a66d]' : 'text-slate-400'}`} />
@@ -315,7 +296,7 @@ export const Wallets = () => {
 
                         <button
                           onClick={() => setWalletToDelete(wallet)}
-                          className="p-1.5 rounded-lg text-slate-400 hover:text-[#cf304a] hover:bg-[#fdf2f3] transition-colors cursor-pointer"
+                          className="p-1.5 rounded text-slate-500 hover:text-[#cf304a] hover:bg-[#fdf2f3] transition-colors cursor-pointer"
                           title="Delete Wallet"
                         >
                           <Trash2 className="w-4 h-4" />
@@ -336,7 +317,6 @@ export const Wallets = () => {
           />
         )}
 
-        {/* Pagination Footer */}
         <Pagination
           page={pagination.page}
           limit={pagination.limit}
@@ -357,30 +337,30 @@ export const Wallets = () => {
       >
         <form onSubmit={handleRegister} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold text-[#1e2329] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#1e2329] uppercase tracking-wider mb-1.5">
               Bitcoin Address
             </label>
             <input
               type="text"
               value={newAddress}
               onChange={(e) => setNewAddress(e.target.value)}
-              placeholder="e.g. tb1qw508d6qejxtdg4y5r3zarvary0c5xw7kxpjzsx"
-              className="w-full px-3.5 py-2.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono placeholder:text-slate-400 focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors"
+              placeholder="Enter Bitcoin address (e.g. tb1q...)"
+              className="w-full px-3.5 py-2.5 rounded bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono placeholder:text-slate-400 focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors"
               required
             />
-            <p className="text-[11px] text-[#707a8a] mt-1">
+            <p className="text-xs text-[#707a8a] mt-1 font-normal">
               Supports SegWit Bech32 (tb1/bc1), Legacy P2PKH (m/n/1), and Script P2SH (2/3).
             </p>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-[#1e2329] uppercase tracking-wider mb-1.5">
+            <label className="block text-xs font-bold text-[#1e2329] uppercase tracking-wider mb-1.5">
               Network
             </label>
             <select
               value={newNetwork}
               onChange={(e) => setNewNetwork(e.target.value)}
-              className="w-full px-3.5 py-2.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-mono focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors cursor-pointer"
+              className="w-full px-3.5 py-2.5 rounded bg-[#f8f9fa] border border-[#eaecef] text-[#1e2329] text-xs font-sans focus:outline-none focus:border-[#F0B90B] focus:bg-white transition-colors cursor-pointer"
             >
               <option value="testnet">Testnet (Default)</option>
               <option value="mainnet">Mainnet</option>
@@ -391,14 +371,14 @@ export const Wallets = () => {
             <button
               type="button"
               onClick={() => setIsRegisterOpen(false)}
-              className="px-4 py-2 text-xs font-medium rounded-lg text-slate-700 bg-white border border-[#eaecef] hover:bg-[#f5f6f8] transition-colors cursor-pointer"
+              className="px-4 py-2 text-xs font-semibold rounded text-slate-700 bg-white border border-[#eaecef] hover:bg-[#f5f6f8] transition-colors cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-4 py-2 text-xs font-semibold rounded-lg bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-50"
+              className="px-4 py-2 text-xs font-bold rounded bg-[#FCD535] hover:bg-[#F0B90B] text-[#181a20] transition-all shadow-xs active:scale-95 cursor-pointer disabled:opacity-50"
             >
               {isSubmitting ? 'Registering...' : 'Register Wallet'}
             </button>
@@ -414,97 +394,94 @@ export const Wallets = () => {
           setWalletDetails(null);
           setWalletTransactions([]);
         }}
-        title="Wallet Inspection"
-        subtitle="Detailed balances, on-chain state, and transaction history"
+        title="Wallet Details"
+        subtitle="Live balances, confirmations, and transaction activity"
         maxWidth="max-w-2xl"
       >
         {detailsLoading ? (
           <LoadingSpinner size="md" message="Fetching live balance and history..." />
         ) : selectedWallet ? (
           <div className="space-y-5">
-            {/* Address Banner */}
-            <div className="p-3.5 rounded-lg bg-[#f8f9fa] border border-[#eaecef]">
-              <span className="text-[10px] font-semibold text-[#707a8a] uppercase tracking-wider block mb-1">
+            <div className="p-3.5 rounded bg-[#f8f9fa] border border-[#eaecef]">
+              <span className="text-xs font-bold text-[#707a8a] uppercase tracking-wider block mb-1">
                 Monitored Address
               </span>
               <div className="flex items-center justify-between gap-2">
-                <span className="font-mono text-xs sm:text-sm text-[#1e2329] break-all select-all font-semibold">
+                <span className="font-mono text-xs sm:text-sm text-[#1e2329] break-all select-all font-bold">
                   {selectedWallet.address}
                 </span>
                 <CopyButton text={selectedWallet.address} />
               </div>
             </div>
 
-            {/* Balances Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div className="p-3.5 rounded-lg bg-white border border-[#eaecef]">
-                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1">
+              <div className="p-3.5 rounded bg-white border border-[#eaecef]">
+                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1 font-medium">
                   <ShieldCheck className="w-3.5 h-3.5 text-[#03a66d]" />
                   <span>Confirmed</span>
                 </div>
                 <div className="font-mono text-sm font-bold text-[#1e2329]">
                   {formatBtc(walletDetails?.balance?.confirmed?.btc || 0)} BTC
                 </div>
-                <div className="font-mono text-[11px] text-[#707a8a] mt-0.5">
+                <div className="font-mono text-xs text-[#707a8a] mt-0.5">
                   {formatSats(walletDetails?.balance?.confirmed?.satoshis || 0)} sats
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-lg bg-white border border-[#eaecef]">
-                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1">
+              <div className="p-3.5 rounded bg-white border border-[#eaecef]">
+                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1 font-medium">
                   <Clock className="w-3.5 h-3.5 text-[#b37400]" />
                   <span>Unconfirmed</span>
                 </div>
                 <div className="font-mono text-sm font-bold text-[#1e2329]">
                   {formatBtc(walletDetails?.balance?.unconfirmed?.btc || 0)} BTC
                 </div>
-                <div className="font-mono text-[11px] text-[#707a8a] mt-0.5">
+                <div className="font-mono text-xs text-[#707a8a] mt-0.5">
                   {formatSats(walletDetails?.balance?.unconfirmed?.satoshis || 0)} sats
                 </div>
               </div>
 
-              <div className="p-3.5 rounded-lg bg-white border border-[#eaecef]">
-                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1">
+              <div className="p-3.5 rounded bg-white border border-[#eaecef]">
+                <div className="flex items-center gap-1.5 text-xs text-[#707a8a] mb-1 font-medium">
                   <Hash className="w-3.5 h-3.5 text-[#2563eb]" />
                   <span>Total Balance</span>
                 </div>
                 <div className="font-mono text-sm font-bold text-[#03a66d]">
                   {formatBtc(walletDetails?.balance?.total?.btc || 0)} BTC
                 </div>
-                <div className="font-mono text-[11px] text-[#707a8a] mt-0.5">
+                <div className="font-mono text-xs text-[#707a8a] mt-0.5">
                   {formatSats(walletDetails?.balance?.total?.satoshis || 0)} sats
                 </div>
               </div>
             </div>
 
-            {/* Wallet Transactions Sub-Table */}
             <div>
-              <h4 className="text-xs font-semibold text-[#1e2329] uppercase tracking-wider mb-2">
+              <h4 className="text-xs font-bold text-[#1e2329] uppercase tracking-wider mb-2">
                 Recent Transactions for this Address
               </h4>
               {walletTransactions.length > 0 ? (
-                <div className="border border-[#eaecef] rounded-lg overflow-hidden max-h-56 overflow-y-auto">
+                <div className="border border-[#eaecef] rounded overflow-hidden max-h-56 overflow-y-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="bg-[#f8f9fa] text-[#707a8a] text-[10px] uppercase font-mono sticky top-0 border-b border-[#eaecef]">
+                    <thead className="bg-[#f8f9fa] text-[#707a8a] text-xs uppercase font-bold sticky top-0 border-b border-[#eaecef]">
                       <tr>
                         <th className="px-3 py-2">Txid</th>
                         <th className="px-3 py-2">Direction</th>
                         <th className="px-3 py-2 text-right">Amount</th>
-                        <th className="px-3 py-2 text-center">Confs</th>
+                        <th className="px-3 py-2 text-center">Confirmations</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#f1f3f5] font-mono">
                       {walletTransactions.map((tx) => (
                         <tr key={tx.id || tx.txid} className="hover:bg-[#f8f9fa]">
                           <td className="px-3 py-2 text-[#1e2329]">
-                            <span title={tx.txid}>{truncateTxid(tx.txid, 6, 6)}</span>
+                            <span title={tx.txid} className="font-bold">{truncateTxid(tx.txid, 6, 6)}</span>
                           </td>
-                          <td className="px-3 py-2">
+                          <td className="px-3 py-2 font-sans">
                             <Badge size="xs" variant={tx.direction === 'INCOMING' ? 'incoming' : 'outgoing'}>
                               {tx.direction}
                             </Badge>
                           </td>
-                          <td className={`px-3 py-2 text-right font-semibold ${
+                          <td className={`px-3 py-2 text-right font-bold ${
                             tx.direction === 'INCOMING' ? 'text-[#03a66d]' : 'text-[#cf304a]'
                           }`}>
                             {formatBtc(tx.amountBtc)} BTC

@@ -1,0 +1,51 @@
+// Prisma schema for Bitcoin Monitoring System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Wallet {
+  id           String        @id @default(uuid())
+  address      String
+  network      String        @default("testnet")
+  isActive     Boolean       @default(true)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  transactions Transaction[]
+
+  @@unique([address, network], name: "address_network")
+  @@index([address])
+  @@index([network])
+  @@index([isActive])
+  @@map("wallets")
+}
+
+model Transaction {
+  id                   String    @id @default(uuid())
+  txid                 String
+  walletId             String
+  direction            String    // "INCOMING" | "OUTGOING"
+  amountSatoshis       BigInt
+  confirmations        Int       @default(0)
+  blockHeight          Int?
+  status               String    @default("PENDING") // "PENDING" | "CONFIRMED"
+  feeSatoshis          BigInt?
+  transactionTimestamp DateTime?
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
+
+  wallet Wallet @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+  @@unique([walletId, txid], name: "wallet_txid")
+  @@index([walletId])
+  @@index([txid])
+  @@index([status])
+  @@index([direction])
+  @@index([createdAt])
+  @@map("transactions")
+}

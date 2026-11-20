@@ -9,9 +9,9 @@ export const LoadingSpinner = ({ size = 'md', message = 'Loading data...', class
   }[size] || 'w-6 h-6';
 
   return (
-    <div className={`flex flex-col items-center justify-center p-8 gap-3 text-slate-400 ${className}`}>
-      <Loader2 className={`${sizeClass} animate-spin text-emerald-400`} />
-      {message && <p className="text-xs font-mono tracking-wide text-slate-400">{message}</p>}
+    <div className={`flex flex-col items-center justify-center p-8 gap-3 text-slate-500 ${className}`}>
+      <Loader2 className={`${sizeClass} animate-spin text-[#F0B90B]`} />
+      {message && <p className="text-xs font-mono tracking-wide text-[#707a8a]">{message}</p>}
     </div>
   );
 };
@@ -24,7 +24,7 @@ export const TableSkeleton = ({ rows = 5, cols = 4 }) => {
           {Array.from({ length: cols }).map((_, cIdx) => (
             <div
               key={cIdx}
-              className="h-7 bg-[#171f2d] rounded-md flex-1"
+              className="h-8 bg-slate-100 rounded flex-1"
               style={{ opacity: 1 - rIdx * 0.15 }}
             />
           ))}

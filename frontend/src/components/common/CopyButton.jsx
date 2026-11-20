@@ -19,10 +19,10 @@ export const CopyButton = ({ text, label = '', className = '', iconSize = 'w-3.5
       type="button"
       onClick={handleCopy}
       title={copied ? 'Copied!' : 'Copy to clipboard'}
-      className={`inline-flex items-center gap-1.5 text-slate-400 hover:text-slate-100 transition-colors cursor-pointer rounded p-1 hover:bg-slate-800/60 ${className}`}
+      className={`inline-flex items-center gap-1.5 text-slate-400 hover:text-[#1e2329] transition-colors cursor-pointer rounded p-1 hover:bg-slate-100 ${className}`}
     >
       {copied ? (
-        <Check className={`${iconSize} text-emerald-400`} />
+        <Check className={`${iconSize} text-[#03a66d]`} />
       ) : (
         <Copy className={`${iconSize}`} />
       )}

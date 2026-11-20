@@ -9,28 +9,28 @@ export const Badge = ({ children, variant = 'default', size = 'sm', className = 
 
   const variantClasses = {
     // Transaction directions
-    incoming: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-    outgoing: 'bg-rose-500/10 text-rose-400 border border-rose-500/20',
+    incoming: 'bg-[#edf9f3] text-[#03a66d] border border-[#d1f2e2]',
+    outgoing: 'bg-[#fdf2f3] text-[#cf304a] border border-[#fbdde1]',
     
     // Statuses
-    confirmed: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-    pending: 'bg-amber-500/10 text-amber-400 border border-amber-500/20 animate-pulse',
+    confirmed: 'bg-[#edf9f3] text-[#03a66d] border border-[#d1f2e2]',
+    pending: 'bg-[#fef9ee] text-[#b37400] border border-[#fdecd0]',
     
     // Wallet States
-    active: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
-    inactive: 'bg-slate-800 text-slate-400 border border-slate-700',
+    active: 'bg-[#edf9f3] text-[#03a66d] border border-[#d1f2e2]',
+    inactive: 'bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]',
     
     // Networks
-    testnet: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
-    mainnet: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+    testnet: 'bg-[#f0f3f8] text-[#475569] border border-[#e2e8f0]',
+    mainnet: 'bg-[#fff8e6] text-[#b37400] border border-[#fdecd0]',
     
     // General
-    info: 'bg-sky-500/10 text-sky-400 border border-sky-500/20',
-    default: 'bg-slate-800 text-slate-300 border border-slate-700'
-  }[variant.toLowerCase()] || 'bg-slate-800 text-slate-300 border border-slate-700';
+    info: 'bg-[#eff6ff] text-[#2563eb] border border-[#dbeafe]',
+    default: 'bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]'
+  }[variant.toLowerCase()] || 'bg-[#f5f6f8] text-[#707a8a] border border-[#eaecef]';
 
   return (
-    <span className={`inline-flex items-center gap-1 rounded-md tracking-wide ${sizeClasses} ${variantClasses} ${className}`}>
+    <span className={`inline-flex items-center gap-1 rounded tracking-wide ${sizeClasses} ${variantClasses} ${className}`}>
       {children}
     </span>
   );

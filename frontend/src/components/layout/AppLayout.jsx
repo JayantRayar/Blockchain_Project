@@ -7,7 +7,7 @@ export const AppLayout = () => {
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-[#0b0e14] text-slate-200 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#1e2329] flex flex-col font-sans">
       <Navbar
         isMobileSidebarOpen={isMobileSidebarOpen}
         onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
@@ -22,11 +22,11 @@ export const AppLayout = () => {
         {/* Mobile Drawer Backdrop */}
         {isMobileSidebarOpen && (
           <div
-            className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden animate-in fade-in"
+            className="fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-xs lg:hidden animate-in fade-in"
             onClick={() => setIsMobileSidebarOpen(false)}
           >
             <div
-              className="w-64 max-w-[80vw] h-full bg-[#0c1017] border-r border-[#1a2230] z-50 animate-in slide-in-from-left duration-200"
+              className="w-64 max-w-[80vw] h-full bg-white border-r border-[#eaecef] z-50 animate-in slide-in-from-left duration-200"
               onClick={(e) => e.stopPropagation()}
             >
               <Sidebar onCloseMobile={() => setIsMobileSidebarOpen(false)} />
